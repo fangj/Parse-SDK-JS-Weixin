@@ -1,3 +1,7 @@
+移植用于微信小程序
+修改 src/RESTController.js : 以wx.request代替原ajax
+修改 src/Storage.js : 不使用localstorage,使用内存作为storage
+
 # Parse SDK for JavaScript
 [![Build Status][build-status-svg]][build-status-link]
 [![Test Coverage][coverage-status-svg]][coverage-status-link]
