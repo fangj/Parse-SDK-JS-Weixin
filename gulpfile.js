@@ -79,6 +79,7 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('./dist'));
 });
 
+
 gulp.task('minify', function() {
   return gulp.src('dist/parse.js')
     .pipe(uglify())

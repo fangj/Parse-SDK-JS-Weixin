@@ -72,8 +72,46 @@ function ajaxIE9(method: string, url: string, data: any) {
   return promise;
 }
 
+//微信portal
+function ajaxWeixin(method: string, url: string, data: any) {
+  var promise = new ParsePromise();
+  wx.request({
+                url,
+                data,
+                method,
+                success: function(res) {
+                    let statusCode = res.statusCode,
+                        errMsg = res.errMsg,
+                        data = res.data;
+                    if (statusCode >= 200 && statusCode < 300) {
+                      var response;
+                      if(typeof data==='object'){
+                          response=data;
+                      } else {
+                        try {
+                          response = JSON.parse(data);
+                        } catch (e) {
+                          promise.reject(e.toString());
+                        }
+                      }
+                      if (response) {
+                        promise.resolve(response, statusCode,res);
+                      }
+                    } else {
+                      promise.reject(res);
+                    }
+                },
+                fail: function(err) {
+                    promise.reject(err);
+                }
+            });
+  return promise;
+}
+
 const RESTController = {
   ajax(method: string, url: string, data: any, headers?: any) {
+    return ajaxWeixin(method, url, data, headers);
+
     if (useXDomainRequest) {
       return ajaxIE9(method, url, data, headers);
     }
